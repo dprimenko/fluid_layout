@@ -5,15 +5,15 @@ import 'package:fluid_layout/src/fluid_breakpoint.dart';
 import 'package:flutter/widgets.dart';
 
 class FluidLayout extends StatefulWidget {
-  static FluidLayoutData of(BuildContext context) => context
-      .dependOnInheritedWidgetOfExactType<FluidLayoutInheritedWidget>()
+  static FluidLayoutData? of(BuildContext context) => context
+      .dependOnInheritedWidgetOfExactType<FluidLayoutInheritedWidget>()!
       .data;
 
-  final Widget child;
-  final FluidValue<double> width;
-  final FluidValue<double> horizontalPadding;
+  final Widget? child;
+  final FluidValue<double>? width;
+  final FluidValue<double>? horizontalPadding;
 
-  const FluidLayout({Key key, this.child, this.width, this.horizontalPadding})
+  const FluidLayout({Key? key, this.child, this.width, this.horizontalPadding})
       : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class _FluidLayoutState extends State<FluidLayout> {
       final double containerWidth = constraints.biggest?.width ?? 0;
       return FluidLayoutInheritedWidget(
         key: _key,
-        child: widget.child,
+        child: widget.child!,
         data: FluidLayoutData(
             containerWidth: containerWidth,
             fluidWidth: (widget.width ?? _defaultFluidWidth)
@@ -44,15 +44,15 @@ class _FluidLayoutState extends State<FluidLayout> {
 }
 
 class FluidLayoutData {
-  final double containerWidth;
-  final double fluidWidth;
-  final double horizontalPadding;
-  final FluidBreakpoint fluidBreakpoint;
+  final double? containerWidth;
+  final double? fluidWidth;
+  final double? horizontalPadding;
+  final FluidBreakpoint? fluidBreakpoint;
 
-  double get fluidPadding => (containerWidth - fluidWidth) / 2;
+  double get fluidPadding => (containerWidth! - fluidWidth!) / 2;
 
   FluidLayoutData(
-      {Key key,
+      {Key? key,
       this.containerWidth,
       this.fluidWidth,
       this.horizontalPadding,
@@ -60,26 +60,26 @@ class FluidLayoutData {
 }
 
 class FluidLayoutInheritedWidget extends InheritedWidget {
-  final FluidLayoutData data;
+  final FluidLayoutData? data;
 
   FluidLayoutInheritedWidget({
-    Key key,
+    Key? key,
     this.data,
-    Widget child,
+    required Widget child,
   }) : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(FluidLayoutInheritedWidget oldWidget) {
-    return oldWidget.data.containerWidth != data.containerWidth;
+    return oldWidget.data!.containerWidth != data!.containerWidth;
   }
 }
 
-final FluidValue<double> _defaultFluidWidth =
-    FluidValue((double containerWidth) {
-  final breakpoint = FluidBreakpointsHelper.from(containerWidth);
+final FluidValue<double?> _defaultFluidWidth =
+    FluidValue((double? containerWidth) {
+  final breakpoint = FluidBreakpointsHelper.from(containerWidth!);
   switch (breakpoint) {
     case FluidBreakpoint.xs:
-      return min(containerWidth, breakpoint.maxFluidWidth);
+      return min(containerWidth, breakpoint.maxFluidWidth!);
     case FluidBreakpoint.s:
     case FluidBreakpoint.m:
     case FluidBreakpoint.l:
@@ -87,24 +87,23 @@ final FluidValue<double> _defaultFluidWidth =
       final currentDistance =
           (breakpoint.maxContainerWidth ?? containerWidth) - containerWidth;
       final totalDistance = (breakpoint.maxContainerWidth ?? containerWidth) -
-          breakpoint.smallerBreakpoint.maxContainerWidth;
+          breakpoint.smallerBreakpoint!.maxContainerWidth!;
       final totalFluidDistance =
-          breakpoint.maxFluidWidth - breakpoint.smallerBreakpoint.maxFluidWidth;
+          breakpoint.maxFluidWidth! - breakpoint.smallerBreakpoint!.maxFluidWidth!;
       final progress = currentDistance / totalDistance;
       final fluidWidth =
-          breakpoint.maxFluidWidth - totalFluidDistance * progress;
+          breakpoint.maxFluidWidth! - totalFluidDistance * progress;
       return fluidWidth;
     case FluidBreakpoint.xl:
       return breakpoint.maxFluidWidth;
   }
-  return containerWidth;
 });
 
 const double _spacer = 16;
 
 final FluidValue<double> defaultHorizontalSpacing =
-    FluidValue((double containerWidth) {
-  final breakpoint = FluidBreakpointsHelper.from(containerWidth);
+    FluidValue((double? containerWidth) {
+  final breakpoint = FluidBreakpointsHelper.from(containerWidth!);
   return FluidValue.breakpointWithoutContext(breakpoint, 0,
       xs: _spacer * 1,
       s: _spacer * 1.25,

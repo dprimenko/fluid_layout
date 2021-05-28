@@ -14,7 +14,7 @@ extension FluidBreakpointsHelper on FluidBreakpoint {
       return FluidBreakpoint.xl;
   }
 
-  double get maxContainerWidth {
+  double? get maxContainerWidth {
     switch (this) {
       case FluidBreakpoint.xs:
         return 576;
@@ -30,7 +30,7 @@ extension FluidBreakpointsHelper on FluidBreakpoint {
     return null;
   }
 
-  double get maxFluidWidth {
+  double? get maxFluidWidth {
     switch (this) {
       case FluidBreakpoint.xs:
         return 540;
@@ -46,7 +46,7 @@ extension FluidBreakpointsHelper on FluidBreakpoint {
     return null;
   }
 
-  FluidBreakpoint get smallerBreakpoint {
+  FluidBreakpoint? get smallerBreakpoint {
     switch (this) {
       case FluidBreakpoint.xs:
         return null;
@@ -62,7 +62,7 @@ extension FluidBreakpointsHelper on FluidBreakpoint {
     return null;
   }
 
-  FluidBreakpoint get biggerBreakpoint {
+  FluidBreakpoint? get biggerBreakpoint {
     switch (this) {
       case FluidBreakpoint.xs:
         return FluidBreakpoint.s;
